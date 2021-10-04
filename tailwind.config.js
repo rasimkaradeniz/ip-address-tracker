@@ -9,6 +9,10 @@ module.exports = {
         "dark-gray": "hsl(0, 0%, 59%)",
       },
     },
+    screens: {
+      sm: "375px",
+      md: "1024px",
+    },
   },
   variants: {
     extend: {},

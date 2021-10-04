@@ -14,29 +14,37 @@ html {
 .header h1 {
   @apply text-white my-5 font-normal text-3xl;
 }
+
 .form-group {
-  @apply flex items-center justify-center;
+  @apply flex items-center justify-center w-[80%];
 }
 .form-group input {
-  @apply w-[500px] rounded-l-2xl border  pl-6 p-3 border-gray-300 text-[18px];
+  @apply sm:w-[100%] sm:py-4 sm:text-lg w-[50vw] rounded-l-2xl border  text-xl font-semibold md:pl-6 p-3 border-gray-300;
 }
 .form-group button {
-  @apply h-[52px] p-5 rounded-r-2xl;
+  @apply sm:p-[23px]  md:p-[24px] rounded-r-2xl;
 }
-main {
-  @apply flex flex-col w-full bg-red-600  items-center;
-}
+
 .content {
-  @apply bg-white rounded-2xl z-10 h-[150px] w-[1000px] -mt-20 grid grid-cols-4 py-7 px-12 divide-x justify-center  divide-gray-300;
+  @apply bg-white rounded-2xl z-50   w-[80%] md:mt-16   md:grid md:grid-cols-4  md:py-7 md:text-left md:px-12 md:divide-x md:items-start   md:divide-gray-300 sm:flex sm:flex-col sm:justify-center sm:items-center sm:text-center sm:h-auto sm:mt-4 sm:py-4 sm:gap-2;
 }
 .content h6 {
-  @apply text-xs text-dark-gray font-semibold;
+  @apply text-xs text-dark-gray font-semibold  md:pb-1;
 }
 .content h2 {
-  @apply text-2xl text-black font-semibold overflow-auto;
+  @apply md:text-2xl sm:text-xl text-black font-semibold overflow-auto;
 }
 .content div:not(:first-child) {
-  @apply pl-10;
+  @apply md:pl-10;
+}
+.content div {
+  @apply h-full;
+}
+.map-container {
+  @apply h-[500px];
+}
+.marker {
+  @apply absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2;
 }
 
 @tailwind utilities;
