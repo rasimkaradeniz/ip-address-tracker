@@ -2,20 +2,56 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import Loader from "react-loader-spinner";
-import { Api } from "./fetch";
 import CreateMap from "./map";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import axios from "axios";
 function App() {
-  let url =
-    "https://geo.ipify.org/api/v1?apiKey=at_FHm7bDx1FLvinA4zBjl7Wq4bmpWvJ";
+  const [url, setUrl] = useState(
+    "https://geo.ipify.org/api/v1?apiKey=at_FHm7bDx1FLvinA4zBjl7Wq4bmpWvJ"
+  );
   const [sendIp, setSendIp] = useState("");
-  const { data, loading } = Api(url);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  const axiosRequest = async (url) => {
+    await axios(url)
+      .then((response) => {
+        setData(response.data);
+      })
+      .finally(() => {
+        setUrl(
+          "https://geo.ipify.org/api/v1?apiKey=at_FHm7bDx1FLvinA4zBjl7Wq4bmpWvJ"
+        );
+
+        setLoading(false);
+      });
+  };
   const sendForm = (e) => {
     e.preventDefault();
-    url = url + "&domain=" + sendIp;
+    if (
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+        sendIp
+      )
+    ) {
+      let newUrl = url + "&ipAddress=" + sendIp;
+      axiosRequest(newUrl);
+    } else {
+      let newUrl = url + "&domain=" + sendIp;
+      axiosRequest(newUrl);
+    }
   };
   if (data) {
     var { location } = data;
   }
+  useEffect(() => {
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  }, [copied]);
+  useEffect(() => {
+    axiosRequest(url);
+  }, []);
   return (
     <>
       <header className="header relative">
@@ -44,14 +80,27 @@ function App() {
             </button>
           </div>
         </form>
-        <div className="content">
+        <div className="content relative">
           {loading === true ? (
-            <Loader type="Circles" color="#00BFFF" height={80} width={80} />
+            <Loader
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              type="Circles"
+              color="#00BFFF"
+              height={80}
+              width={80}
+            />
           ) : (
             <>
               <div className="ip">
                 <h6>IP ADDRESS</h6>
-                <h2>{data.ip}</h2>
+                <CopyToClipboard
+                  text={data.ip}
+                  onCopy={() => {
+                    setCopied(true);
+                  }}
+                >
+                  <h2 className="cursor-pointer">{data.ip}</h2>
+                </CopyToClipboard>
               </div>
               <div className="location">
                 <h6>LOCATION</h6>
@@ -59,7 +108,7 @@ function App() {
               </div>
               <div className="timezone">
                 <h6>TIMEZONE</h6>
-                <h2>{data.location.timezone}</h2>
+                <h2>{"UTC " + data.location.timezone}</h2>
               </div>
               <div className="isp">
                 <h6>ISP</h6>
@@ -85,6 +134,11 @@ function App() {
           </>
         )}
       </div>
+      {copied ? (
+        <h1 className="z-50 fixed bottom-5 right-5 bg-gradient-to-r  from-green-500 to-blue-400 text-white px-8 py-3 rounded-lg">
+          ip adresi kopyalandı.
+        </h1>
+      ) : null}
     </>
   );
 }

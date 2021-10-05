@@ -12,14 +12,14 @@ html {
   @apply h-[250px] w-full flex flex-col  items-center;
 }
 .header h1 {
-  @apply text-white my-5 font-normal text-3xl;
+  @apply text-white my-5 font-medium text-3xl;
 }
 
 .form-group {
   @apply flex items-center justify-center w-[80%];
 }
 .form-group input {
-  @apply sm:w-[100%] sm:py-4 sm:text-lg w-[50vw] rounded-l-2xl border  text-xl font-semibold md:pl-6 p-3 border-gray-300;
+  @apply sm:w-[100%] sm:py-4 sm:text-base sm:font-medium w-[50vw] rounded-l-2xl border  text-xl font-semibold md:pl-6 p-3 border-gray-300;
 }
 .form-group button {
   @apply sm:p-[23px]  md:p-[24px] rounded-r-2xl;
